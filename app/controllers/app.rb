@@ -2,6 +2,17 @@ get '/' do
   erb :index
 end
 
+post '/' do
+  @title = params[:title]
+  if request.xhr?
+    { title: @title}.to_json
+  else
+    redirect to :"/"
+  end
+end
+
+
+
 get 'favorites' do
   response.header['Content-Type'] = 'application/json'
   File.read('data.json')

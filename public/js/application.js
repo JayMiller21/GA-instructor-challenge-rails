@@ -22,4 +22,31 @@ $(document).ready(function() {
 
   });
 
+
+  $("#movie_search_form").on('submit',function(event) {
+
+    event.preventDefault();
+
+    $.ajax({
+      type: "POST",
+      url: "/",
+      dataType: "json",
+      data:$("#movie_search_form").serialize()
+      // success: function(response){$("#results").append("<p>"+response+"</p>")}
+    }).done(function(response){
+
+      $("#results").append(
+        "<p>"+response.title+"</p>"
+
+        // "<li><div id='movie_result'><p>" + response.comment + "</p></div></li><br>"
+        )
+    });
+
+    });
+
+
+
+
+
+
 });
