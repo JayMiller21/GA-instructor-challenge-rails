@@ -12,10 +12,15 @@ $(document).ready(function() {
   $("#find_movies").on("click", function(event) {
 
     $.ajax({
-      url: "http://www.omdbapi.com/?t=star+wars&y=2000&plot=short&r=json",
+      url: "http://www.omdbapi.com/?s=star+wars",
       dataType: "json",
       success: function( data ) {
-        $( "div#results" ).append( "<p>"+data.Title+"</p>" )
+
+        alert(JSON.stringify(data));
+
+        $( "div#results" ).append( 
+          
+          "<p>"+data.Search[0].Title+"</p>" )
       }
 
     });
@@ -35,13 +40,23 @@ $(document).ready(function() {
       // success: function(response){$("#results").append("<p>"+response+"</p>")}
     }).done(function(response){
 
-      omdbRequestUrl = "http://www.omdbapi.com/?t=" + response.title
+      omdbRequestUrl = "http://www.omdbapi.com/?s=" + response.title
 
-      $("#results").append(
-        "<p>"+omdbRequestUrl+"</p>"
+      // $("#results").append(
+      //   "<p>"+omdbRequestUrl+"</p>"
 
-        // "<li><div id='movie_result'><p>" + response.comment + "</p></div></li><br>"
-        )
+      //   // "<li><div id='movie_result'><p>" + response.comment + "</p></div></li><br>"
+      //   )
+
+      $.ajax({
+        url: omdbRequestUrl,
+        dataType: "json",
+        success: function( data ) {
+          $( "div#results" ).append( "<p>"+data.Title+"</p>" )
+        }
+      });
+
+
     });
 
     });
