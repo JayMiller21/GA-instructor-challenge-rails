@@ -3,7 +3,7 @@ get '/' do
 end
 
 post '/' do
-  @title = params[:title]
+  @title = params[:title].downcase.gsub(" ","+")
   if request.xhr?
     { title: @title}.to_json
   else

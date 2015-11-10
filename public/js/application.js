@@ -35,8 +35,10 @@ $(document).ready(function() {
       // success: function(response){$("#results").append("<p>"+response+"</p>")}
     }).done(function(response){
 
+      omdbRequestUrl = "http://www.omdbapi.com/?t=" + response.title
+
       $("#results").append(
-        "<p>"+response.title+"</p>"
+        "<p>"+omdbRequestUrl+"</p>"
 
         // "<li><div id='movie_result'><p>" + response.comment + "</p></div></li><br>"
         )
