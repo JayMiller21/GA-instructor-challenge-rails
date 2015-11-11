@@ -17,7 +17,6 @@ $(document).ready(function() {
       type: "POST",
       url: "/",
       dataType: "json",
-      // 
       data:$("#movie_search_form").serialize()
 
     // Specifies what is to happen following submission of movie search form   
@@ -28,40 +27,38 @@ $(document).ready(function() {
       // request search results from OMDB API
       $.ajax({
         url: omdbRequestUrl,
-        dataType: "json",
-        success: function( data ) {
+        dataType: "json"
+      }).done(function( data ) {
           
-          var movies = data.Search; 
+        var movies = data.Search;
 
-          // Clear previous search results from window
-          $( "#results" ).html("");
+        // Clear previous search results from window
+        $( "#results" ).html("");
 
-          // Display all resulting movie titles from search
-          $.each( movies, function( i, item ) {
+        // Display all resulting movie titles from search
+        $.each( movies, function( i, item ) {
 
-            var movieHtml = "<div class='result'><p class='movie-title' style='display:inline-block'>" + item.Title + "</p><button type='button' class='favorite-button' style='display:inline-block'>Favorite</button></div>";
-            $( "#results" ).append( movieHtml );
+          var movieHtml = "<div class='result'><p class='movie-title' style='display:inline-block'>" + item.Title + "</p><button type='button' class='favorite-button' style='display:inline-block'>Favorite</button></div>";
+          $( "#results" ).append( movieHtml );
 
-            // Create hidden element with more detail on each resulting movie from OMDB
-            var omdbRequestUrlDetailed = "http://www.omdbapi.com/?t=" + item.Title.replace(/\s+/g, '+').toLowerCase();
+          // Create hidden element with more detail on each resulting movie from OMDB
+          var omdbRequestUrlDetailed = "http://www.omdbapi.com/?t=" + item.Title.replace(/\s+/g, '+').toLowerCase();
 
-            $.ajax({
-              url: omdbRequestUrlDetailed,
-              dataType: "json"
-            }).done(function( data ) {
-                var moviePlotHtml = "<p class='movie-plot' style='display:none'>" + data.Plot + "</p>"
-                var movieDiv = $('#results').find('#result-' + (i+1));
-                $(movieDiv).append(moviePlotHtml)
-            });
-
+          $.ajax({
+            url: omdbRequestUrlDetailed,
+            dataType: "json"
+          }).done(function( data ) {
+              var moviePlotHtml = "<p class='movie-plot' style='display:none'>" + data.Plot + "</p>"
+              var movieDiv = $('#results').find('#result-' + (i+1));
+              $(movieDiv).append(moviePlotHtml);
           });
 
-          // Assign a unique id to each movie result element so that each may be appended with corresponding details upon user click
-          $('.result').attr('id', function(i) {
-            return 'result-'+(i+1);
-          });
-        }
+        });
 
+        // Assign a unique id to each movie result element so that each may be appended with corresponding details upon user click
+        $('.result').attr('id', function(i) {
+          return 'result-'+(i+1);
+        });
       });
 
     });
