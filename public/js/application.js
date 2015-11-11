@@ -7,7 +7,7 @@ $(document).ready(function() {
   // Define behavior to occur upon submission of movie search form
   $("#movie_search_form").on('submit',function(event) {
 
-    // prevent default behavior upon submit
+    // prevent default behavior (page reload) upon submit - ajax will display the search results without page reload.
     event.preventDefault();
 
     // 
@@ -30,7 +30,6 @@ $(document).ready(function() {
         success: function( data ) {
           
           var movies = data.Search; 
-          // alert(JSON.stringify(data));
 
           // Clear previous search results from window
           $( "#results" ).html("");
@@ -69,24 +68,14 @@ $(document).ready(function() {
   });
 
   // When user clicks a movie result, display movie details.
-  $('#results').on('click', '.result', function(event) { 
+  $('#results').on('click', ".result > .movie-title", function(event) { 
 
-    // event.preventDefault();
-    // alert("click");
-
-    // alert($(this).attr('id'));
-
-    $(this).find('.movie-plot').toggle();
-    // TODO: get the id number from the element id
-    // TODO: unhide the additional details (toggle so second click re-hides)
+    $(this).parent().find('.movie-plot').toggle();
 
   });
 
   // When user clicks favorite button, save to favorites
   $('#results').on('click', '.favorite-button', function(event) { 
-
-    event.preventDefault();
-    // alert($(this).attr('class'));
 
     var movieTitle = $(this).parent().find('.movie-title').text();
     var omdbRequestUrlDetailed2 = "http://www.omdbapi.com/?t=" + movieTitle.replace(/\s+/g, '+').toLowerCase();
