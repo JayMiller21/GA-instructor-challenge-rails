@@ -98,7 +98,7 @@ DEPENDENCIES
   bcrypt-ruby
   capybara
   database_cleaner (~> 1.4.1)
-  debugger (~> 1.6, >= 1.6.8)
+  debugger
   factory_girl
   faker
   json
