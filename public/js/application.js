@@ -21,7 +21,7 @@ $(document).ready(function() {
     // Specifies what is to happen following submission of movie search form   
     }).done(function(response){
 
-      var omdbRequestUrl = "http://www.omdbapi.com/?s=" + response.title
+      var omdbRequestUrl = "http://www.omdbapi.com/?s=" + response.title;
 
       // request search results from OMDB API
       $.ajax({
@@ -96,7 +96,7 @@ $(document).ready(function() {
       url: omdbRequestUrlDetailed2,
       dataType: "json",
       success: function( data ) {
-        // alert(JSON.stringify(data));
+        alert("Favorite added!");
         var favoriteObject = { title: data.Title, imdb_id: data.imdbID };
 
         // Send favorited-movie data to back end
@@ -105,10 +105,10 @@ $(document).ready(function() {
           dataType: 'json',
           contentType: 'application/json',
           type: 'POST',
-          data: JSON.stringify(favoriteObject),
-          success: function() {
-            alert("Favorite added!");
-          }
+          data: JSON.stringify(favoriteObject)
+          // success: function() {
+          //   alert("Favorite added!");
+          // }
         });
       }
     });
