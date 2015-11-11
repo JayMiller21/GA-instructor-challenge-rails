@@ -29,16 +29,31 @@ $(document).ready(function() {
         dataType: "json",
         success: function( data ) {
           
-          var movies = data.Search; // alert(JSON.stringify(data));
+          var movies = data.Search; 
+          alert(JSON.stringify(data));
 
           // Clear previous search results from window
           $( "#results" ).html("");
 
           // Display all resulting movie titles from search
           $.each( movies, function( i, item ) {
-              var newListItem = "<p class='result'>" + item.Title + "</p>";
-              // TODO: add hidden div with more movie details
-              $( "#results" ).append( newListItem );
+
+              var movieHtml = "<div class='result'><p class='movie-title'>" + item.Title + "</p></div>";
+              $( "#results" ).append( movieHtml );
+
+              // Create hidden element with more detail on each resulting movie from OMDB
+              var omdbRequestUrlDetailed = "http://www.omdbapi.com/?t=" + item.Title.replace(/\s+/g, '+').toLowerCase();
+
+              $.ajax({
+                url: omdbRequestUrlDetailed,
+                dataType: "json",
+                success: function( data ) {
+                  var moviePlotHtml = "<p class='movie-plot' style='display:none'>" + data.Plot + "</p>"
+                  var movieDiv = $('#results').find('#result-' + (i+1));
+                  $(movieDiv).append(moviePlotHtml)
+                }
+              });
+
           });
 
           // Assign a unique id to each movie result element so that each may be appended with corresponding details upon user click
