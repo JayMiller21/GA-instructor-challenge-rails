@@ -4,25 +4,32 @@ $(document).ready(function() {
   // when we try to bind to them
   // See: http://docs.jquery.com/Tutorials:Introducing_$(document).ready() 
 
+  // Define behavior to occur upon submission of movie search form
   $("#movie_search_form").on('submit',function(event) {
 
+    // prevent default behavior upon submit
     event.preventDefault();
 
+    // 
     $.ajax({
       type: "POST",
       url: "/",
       dataType: "json",
+      // 
       data:$("#movie_search_form").serialize()
+
+    // Specifies what is to happen following submission of movie search form   
     }).done(function(response){
 
-      omdbRequestUrl = "http://www.omdbapi.com/?s=" + response.title
+      var omdbRequestUrl = "http://www.omdbapi.com/?s=" + response.title
 
+      // request search results from OMDB API
       $.ajax({
         url: omdbRequestUrl,
         dataType: "json",
         success: function( data ) {
-          // alert(JSON.stringify(data));
-          movies = data.Search;
+          
+          var movies = data.Search; // alert(JSON.stringify(data));
 
           // Clear previous search results from window
           $( "#results" ).html("");
@@ -30,6 +37,7 @@ $(document).ready(function() {
           // Display all resulting movie titles from search
           $.each( movies, function( i, item ) {
               var newListItem = "<p class='result'>" + item.Title + "</p>";
+              // TODO: add hidden div with more movie details
               $( "#results" ).append( newListItem );
           });
 
@@ -42,6 +50,13 @@ $(document).ready(function() {
       });
 
     });
-    });
+  });
+
+  // When user clicks a movie result, display movie details.
+  // $(".result").on('click',function(event) {
+    // TODO: get the id number from the element id
+    // TODO: unhide the additional details (toggle so second click re-hides)
+
+  // });
 
 });
