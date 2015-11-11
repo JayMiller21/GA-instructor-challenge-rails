@@ -1,8 +1,10 @@
+// var showSearchResults = 
+
+
+// The following is called after the document has loaded in its entirety
+// This guarantees that any elements we bind to will exist on the page
+// when we try to bind to them
 $(document).ready(function() {
-  // This is called after the document has loaded in its entirety
-  // This guarantees that any elements we bind to will exist on the page
-  // when we try to bind to them
-  // See: http://docs.jquery.com/Tutorials:Introducing_$(document).ready() 
 
   // Define behavior to occur upon submission of movie search form
   $("#movie_search_form").on('submit',function(event) {
@@ -67,15 +69,15 @@ $(document).ready(function() {
     });
   });
 
-  // When user clicks a movie result, display movie details.
-  $('#results').on('click', ".result > .movie-title", function(event) { 
+  // When user clicks a movie result, display movie details. We must select the "#results" element because it existed on page load, the the child elements that we want to manipulate did not. 
+  $('#results').on('click', ".result > .movie-title", function(event) {
 
     $(this).parent().find('.movie-plot').toggle();
 
   });
 
   // When user clicks favorite button, save to favorites
-  $('#results').on('click', '.favorite-button', function(event) { 
+  $('#results').on('click', '.favorite-button', function(event) {
 
     var movieTitle = $(this).parent().find('.movie-title').text();
     var omdbRequestUrlDetailed2 = "http://www.omdbapi.com/?t=" + movieTitle.replace(/\s+/g, '+').toLowerCase();
@@ -83,8 +85,8 @@ $(document).ready(function() {
     // Get all movie details from OMDB server
     $.ajax({
       url: omdbRequestUrlDetailed2,
-      dataType: "json",
-      success: function( data ) {
+      dataType: "json"
+    }).done(function( data ) {
         alert("Favorite added!");
         var favoriteObject = { title: data.Title, imdb_id: data.imdbID };
 
@@ -95,13 +97,8 @@ $(document).ready(function() {
           contentType: 'application/json',
           type: 'POST',
           data: JSON.stringify(favoriteObject)
-          // success: function() {
-          //   alert("Favorite added!");
-          // }
         });
-      }
-    });
-
+      });
 
   });
 
