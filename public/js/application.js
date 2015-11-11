@@ -82,4 +82,38 @@ $(document).ready(function() {
 
   });
 
+  // When user clicks favorite button, save to favorites
+  $('#results').on('click', '.favorite-button', function(event) { 
+
+    event.preventDefault();
+    // alert($(this).attr('class'));
+
+    var movieTitle = $(this).parent().find('.movie-title').text();
+    var omdbRequestUrlDetailed2 = "http://www.omdbapi.com/?t=" + movieTitle.replace(/\s+/g, '+').toLowerCase();
+
+    // Get all movie details from OMDB server
+    $.ajax({
+      url: omdbRequestUrlDetailed2,
+      dataType: "json",
+      success: function( data ) {
+        // alert(JSON.stringify(data));
+        var favoriteObject = { title: data.Title, imdb_id: data.imdbID };
+
+        // Send favorited-movie data to back end
+        $.ajax({
+          url: '/favorites/new',
+          dataType: 'json',
+          contentType: 'application/json',
+          type: 'POST',
+          data: JSON.stringify(favoriteObject),
+          success: function() {
+            alert("Favorite added!");
+          }
+        });
+      }
+    });
+
+
+  });
+
 });
