@@ -22,12 +22,23 @@ $(document).ready(function() {
         dataType: "json",
         success: function( data ) {
           // alert(JSON.stringify(data));
-          movies = data.Search
+          movies = data.Search;
+
+          // Clear previous search results from window
+          $( "#results" ).html("");
+
+          // Display all resulting movie titles from search
           $.each( movies, function( i, item ) {
-              var newListItem = "<p>" + item.Title + "</p>";
+              var newListItem = "<p class='result'>" + item.Title + "</p>";
               $( "#results" ).append( newListItem );
           });
+
+          // Assign a unique id to each movie result element so that each may be appended with corresponding details upon user click
+          $('.result').attr('id', function(i) {
+            return 'result-'+(i+1);
+          });
         }
+
       });
 
     });
