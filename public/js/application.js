@@ -39,22 +39,20 @@ $(document).ready(function() {
           // Display all resulting movie titles from search
           $.each( movies, function( i, item ) {
 
-              var movieHtml = "<div class='result'><p class='movie-title' style='display:inline-block'>" + item.Title + "</p><button type='button' class='favorite-button' style='display:inline-block'>Favorite</button></div>";
-              $( "#results" ).append( movieHtml );
+            var movieHtml = "<div class='result'><p class='movie-title' style='display:inline-block'>" + item.Title + "</p><button type='button' class='favorite-button' style='display:inline-block'>Favorite</button></div>";
+            $( "#results" ).append( movieHtml );
 
-              // Create hidden element with more detail on each resulting movie from OMDB
-              var omdbRequestUrlDetailed = "http://www.omdbapi.com/?t=" + item.Title.replace(/\s+/g, '+').toLowerCase();
+            // Create hidden element with more detail on each resulting movie from OMDB
+            var omdbRequestUrlDetailed = "http://www.omdbapi.com/?t=" + item.Title.replace(/\s+/g, '+').toLowerCase();
 
-              $.ajax({
-                url: omdbRequestUrlDetailed,
-                dataType: "json",
-                success: function( data ) {
-                  // alert(JSON.stringify(data));
-                  var moviePlotHtml = "<p class='movie-plot' style='display:none'>" + data.Plot + "</p>"
-                  var movieDiv = $('#results').find('#result-' + (i+1));
-                  $(movieDiv).append(moviePlotHtml)
-                }
-              });
+            $.ajax({
+              url: omdbRequestUrlDetailed,
+              dataType: "json"
+            }).done(function( data ) {
+                var moviePlotHtml = "<p class='movie-plot' style='display:none'>" + data.Plot + "</p>"
+                var movieDiv = $('#results').find('#result-' + (i+1));
+                $(movieDiv).append(moviePlotHtml)
+            });
 
           });
 
