@@ -16,11 +16,23 @@ $(document).ready(function() {
       dataType: "json",
       success: function( data ) {
 
-        alert(JSON.stringify(data));
+        // alert(JSON.stringify(data));
+        movies = data.Search
 
-        $( "div#results" ).append( 
-          
-          "<p>"+data.Search[0].Title+"</p>" )
+$.each( movies, function( i, item ) {
+ 
+    var newListItem = "<p>" + item.Title + "</p>";
+ 
+    $( "#results" ).append( newListItem );
+ 
+});
+
+
+        // $( "div#results" ).append( 
+        //   for (i=0; i<movies.length; i++) {
+        //   "<p>"+movies[i].Title+"</p>" 
+        //   }
+        //   )
       }
 
     });
