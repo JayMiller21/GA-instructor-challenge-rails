@@ -1,0 +1,17 @@
+<% if @error %>
+<%= @error %>
+<% end %>
+
+<h2>Login</h2>
+<form action="/login" method="post">
+<label>Username</label><input type="text" name="login[name]">
+<label>Password</label><input type="password" name="login[password]">
+<input type="submit" value="Login!">
+</form>
+
+<h2>Signup</h2>
+<form action="/signup" method="post">
+<label>Username</label><input type="text" name="signup[name]">
+<label>Password</label><input type="password" name="signup[password]">
+<input type="submit" value="Signup!">
+</form>

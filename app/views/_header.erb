@@ -1,0 +1,12 @@
+<nav>
+
+  <a href="/">Site Home</a>
+
+  <% if logged_in? %>
+    <a href="/user/<%= @current_user.id %>">My Profile</a>
+    <a href="/logout" >Logout</a>
+  <% else %>
+    <a href="/login">Login/ Signup</a>
+  <% end %>
+
+</nav>
