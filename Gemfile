@@ -17,7 +17,7 @@ gem 'shotgun'
 
 # Other
 gem 'json'
-gem 'debugger', '~> 1.6', '>= 1.6.8'
+gem 'debugger'
 
 group :test do
   gem 'database_cleaner', '~> 1.4.1'
