@@ -30,7 +30,7 @@ $(document).ready(function() {
         success: function( data ) {
           
           var movies = data.Search; 
-          alert(JSON.stringify(data));
+          // alert(JSON.stringify(data));
 
           // Clear previous search results from window
           $( "#results" ).html("");
@@ -68,10 +68,17 @@ $(document).ready(function() {
   });
 
   // When user clicks a movie result, display movie details.
-  // $(".result").on('click',function(event) {
+  $('#results').on('click', '.result', function(event) { 
+
+    // event.preventDefault();
+    // alert("click");
+
+    // alert($(this).attr('id'));
+
+    $(this).find('.movie-plot').toggle();
     // TODO: get the id number from the element id
     // TODO: unhide the additional details (toggle so second click re-hides)
 
-  // });
+  });
 
 });
