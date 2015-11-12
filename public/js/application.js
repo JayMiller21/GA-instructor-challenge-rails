@@ -1,3 +1,17 @@
+//Functions are defined first, and will be invoked later.
+
+function requestSearchResultsFromOmdb(formData){
+
+      var omdbRequestUrl = "http://www.omdbapi.com/?s=" + formData.title;
+
+      // request search results from OMDB API
+      $.ajax({
+        url: omdbRequestUrl,
+        dataType: "json"
+      }).done(displaySearchResults);
+        
+    }
+
 // Display all resulting movie titles from search
 function displaySearchResults(moviesData) {
   var movies = moviesData.Search;
@@ -60,17 +74,12 @@ $(document).ready(function() {
       data:$(this).serialize()
 
     // Specifies what is to happen following submission of movie search form   
-    }).done(function(response){
+    }).done(requestSearchResultsFromOmdb);
 
-      var omdbRequestUrl = "http://www.omdbapi.com/?s=" + response.title;
 
-      // request search results from OMDB API
-      $.ajax({
-        url: omdbRequestUrl,
-        dataType: "json"
-      }).done(displaySearchResults);
-        
-    });
+
+
+
 
   });
 
