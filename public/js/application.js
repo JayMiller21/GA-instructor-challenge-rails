@@ -1,4 +1,3 @@
-
 // Display all resulting movie titles from search
 function displaySearchResults(moviesData) {
   var movies = moviesData.Search;
@@ -77,9 +76,7 @@ $(document).ready(function() {
 
   // When user clicks a movie result, display movie details. We must select the "#results" element because it existed on page load, the the child elements that we want to manipulate did not. 
   $('#results').on('click', ".result > .movie-title", function(event) {
-
     $(this).parent().find('.movie-plot').toggle();
-
   });
 
   // When user clicks favorite button, save to favorites
