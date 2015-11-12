@@ -1,4 +1,27 @@
-// var showSearchResults = 
+
+// Display all resulting movie titles from search
+function displaySearchResults(movies) {
+  // Clear previous search results from window
+  $( "#results" ).html("");
+  $.each( movies, function( i, item ) {
+
+    var movieHtml = "<div class='result'><p class='movie-title' style='display:inline-block'>" + item.Title + "</p><button type='button' class='favorite-button' style='display:inline-block'>Favorite</button></div>";
+    $( "#results" ).append( movieHtml );
+
+    // Create hidden element with more detail on each resulting movie from OMDB
+    var omdbRequestUrlDetailed = "http://www.omdbapi.com/?t=" + item.Title.replace(/\s+/g, '+').toLowerCase();
+
+    $.ajax({
+      url: omdbRequestUrlDetailed,
+      dataType: "json"
+    }).done(function( data ) {
+        var moviePlotHtml = "<p class='movie-plot' style='display:none'>" + data.Plot + "</p>";
+        var movieDiv = $('#results').find('#result-' + (i+1));
+        $(movieDiv).append(moviePlotHtml);
+    });
+
+  });
+}
 
 // Send favorited-movie data to back end
 function saveFavorite(movieData){
@@ -24,12 +47,12 @@ $(document).ready(function() {
     // prevent default behavior (page reload) upon submit - ajax will display the search results without page reload.
     event.preventDefault();
 
-    // 
+    // Submit search form content
     $.ajax({
       type: "POST",
       url: "/",
       dataType: "json",
-      data:$("#movie_search_form").serialize()
+      data:$(this).serialize()
 
     // Specifies what is to happen following submission of movie search form   
     }).done(function(response){
@@ -44,28 +67,8 @@ $(document).ready(function() {
           
         var movies = data.Search;
 
-        // Clear previous search results from window
-        $( "#results" ).html("");
-
-        // Display all resulting movie titles from search
-        $.each( movies, function( i, item ) {
-
-          var movieHtml = "<div class='result'><p class='movie-title' style='display:inline-block'>" + item.Title + "</p><button type='button' class='favorite-button' style='display:inline-block'>Favorite</button></div>";
-          $( "#results" ).append( movieHtml );
-
-          // Create hidden element with more detail on each resulting movie from OMDB
-          var omdbRequestUrlDetailed = "http://www.omdbapi.com/?t=" + item.Title.replace(/\s+/g, '+').toLowerCase();
-
-          $.ajax({
-            url: omdbRequestUrlDetailed,
-            dataType: "json"
-          }).done(function( data ) {
-              var moviePlotHtml = "<p class='movie-plot' style='display:none'>" + data.Plot + "</p>";
-              var movieDiv = $('#results').find('#result-' + (i+1));
-              $(movieDiv).append(moviePlotHtml);
-          });
-
-        });
+        displaySearchResults(movies);
+        
 
         // Assign a unique id to each movie result element so that each may be appended with corresponding details upon user click
         $('.result').attr('id', function(i) {
@@ -89,7 +92,7 @@ $(document).ready(function() {
     var movieTitle = $(this).parent().find('.movie-title').text();
     var omdbRequestUrlDetailed2 = "http://www.omdbapi.com/?t=" + movieTitle.replace(/\s+/g, '+').toLowerCase();
 
-    // Get all movie details from OMDB server and save select data to back end
+    // Get all movie details from OMDB server and save select data to back end. ".done" passes the result of the ajax call to the function saveFavorite, which was defined above, outside of document ready.
     $.ajax({
       url: omdbRequestUrlDetailed2,
       dataType: "json"
