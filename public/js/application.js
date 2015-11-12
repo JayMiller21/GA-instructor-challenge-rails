@@ -1,5 +1,17 @@
 // var showSearchResults = 
 
+// Send favorited-movie data to back end
+function saveFavorite(movieData){
+  var movieDataFormatted = { title: movieData.Title, imdb_id: movieData.imdbID };
+  $.ajax({
+    url: '/favorites/new',
+    dataType: 'json',
+    contentType: 'application/json',
+    type: 'POST',
+    data: JSON.stringify(movieDataFormatted)
+  });
+  alert("Favorite added!");
+}
 
 // The following is called after the document has loaded in its entirety
 // This guarantees that any elements we bind to will exist on the page
@@ -48,7 +60,7 @@ $(document).ready(function() {
             url: omdbRequestUrlDetailed,
             dataType: "json"
           }).done(function( data ) {
-              var moviePlotHtml = "<p class='movie-plot' style='display:none'>" + data.Plot + "</p>"
+              var moviePlotHtml = "<p class='movie-plot' style='display:none'>" + data.Plot + "</p>";
               var movieDiv = $('#results').find('#result-' + (i+1));
               $(movieDiv).append(moviePlotHtml);
           });
@@ -77,23 +89,11 @@ $(document).ready(function() {
     var movieTitle = $(this).parent().find('.movie-title').text();
     var omdbRequestUrlDetailed2 = "http://www.omdbapi.com/?t=" + movieTitle.replace(/\s+/g, '+').toLowerCase();
 
-    // Get all movie details from OMDB server
+    // Get all movie details from OMDB server and save select data to back end
     $.ajax({
       url: omdbRequestUrlDetailed2,
       dataType: "json"
-    }).done(function( data ) {
-        alert("Favorite added!");
-        var favoriteObject = { title: data.Title, imdb_id: data.imdbID };
-
-        // Send favorited-movie data to back end
-        $.ajax({
-          url: '/favorites/new',
-          dataType: 'json',
-          contentType: 'application/json',
-          type: 'POST',
-          data: JSON.stringify(favoriteObject)
-        });
-      });
+    }).done(saveFavorite);
 
   });
 
