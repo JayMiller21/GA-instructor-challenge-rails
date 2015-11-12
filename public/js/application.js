@@ -1,6 +1,7 @@
 
 // Display all resulting movie titles from search
-function displaySearchResults(movies) {
+function displaySearchResults(moviesData) {
+  var movies = moviesData.Search;
   // Clear previous search results from window
   $( "#results" ).html("");
   $.each( movies, function( i, item ) {
@@ -19,6 +20,11 @@ function displaySearchResults(movies) {
         var movieDiv = $('#results').find('#result-' + (i+1));
         $(movieDiv).append(moviePlotHtml);
     });
+    
+    // Assign a unique id to each movie result element so that each may be appended with corresponding details upon user click
+    $('.result').attr('id', function(i) {
+        return 'result-'+(i+1);
+      });
 
   });
 }
@@ -63,20 +69,10 @@ $(document).ready(function() {
       $.ajax({
         url: omdbRequestUrl,
         dataType: "json"
-      }).done(function( data ) {
-          
-        var movies = data.Search;
-
-        displaySearchResults(movies);
+      }).done(displaySearchResults);
         
-
-        // Assign a unique id to each movie result element so that each may be appended with corresponding details upon user click
-        $('.result').attr('id', function(i) {
-          return 'result-'+(i+1);
-        });
-      });
-
     });
+
   });
 
   // When user clicks a movie result, display movie details. We must select the "#results" element because it existed on page load, the the child elements that we want to manipulate did not. 
